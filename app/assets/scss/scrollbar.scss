@@ -1,0 +1,24 @@
+/* assets/scss/_scrollbar.scss */
+
+/* scrollbar 全局設定 */
+::-webkit-scrollbar {
+  width: 6px;   /* 水平/垂直捲軸寬度 */
+  height: 6px;
+}
+
+/* 滾動軸滑塊 */
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 123, 255, 0.5); /* 半透明藍色 */
+  border-radius: 3px;  /* 圓角 */
+}
+
+/* 滾動軸軌道 */
+::-webkit-scrollbar-track {
+  background-color: #e6f0ff; /* 淺藍色背景 */
+  border-radius: 3px;
+}
+
+/* 可選：懸停時加深 */
+::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(0, 123, 255, 0.8);
+}

@@ -1,0 +1,12 @@
+/* assets/scss/main.scss */
+
+/* Reset / Base */
+@use './reset.scss';
+
+/* 引入 scrollbar 部分樣式 */
+@use './scrollbar.scss';
+
+/* 其他全域樣式 */
+body {
+  font-family: 'Arial', sans-serif;
+}
