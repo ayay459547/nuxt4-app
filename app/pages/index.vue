@@ -1,12 +1,7 @@
-<script setup>
-import ChartGantt from '~/components/ChartGantt.vue'
-
-</script>
+<script setup></script>
 
 <template>
-  <v-app>
-    <v-main>
-      <ChartGantt />
-    </v-main>
-  </v-app>
+  <div>
+    123
+  </div>
 </template>
