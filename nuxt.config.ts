@@ -4,11 +4,20 @@ import vuetify, { transformAssetUrls } from 'vite-plugin-vuetify'
 export default defineNuxtConfig({
   srcDir: 'app/',
   compatibilityDate: '2025-07-15',
+  pages: true,
+  ssr: false,
   devtools: { enabled: true },
   build: {
     transpile: ['vuetify'],
   },
+  components: true,
   css: ['@/assets/scss/main.scss'],
+  // runtimeConfig: {
+  //   apiSecret: process.env.API_SECRET, // 只在 server 可用
+  //   public: {
+  //     apiBase: process.env.API_BASE // server + client 可用
+  //   }
+  // },
   modules: [
     '@nuxt/eslint',
     '@nuxt/test-utils',
