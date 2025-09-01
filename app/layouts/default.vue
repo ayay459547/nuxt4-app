@@ -78,7 +78,7 @@ const NAVS = [
       <v-navigation-drawer v-model="isDrawerOpen" class="bg-blue-lighten-4">
         <v-list nav>
           <template v-for="nav in NAVS" :key="`drawer-${nav.title}`">
-            <v-divider color="info" />
+            <v-divider color="info" :thickness="3" />
             <v-list-item
               v-for="item in nav.children"
               :key="`drawer-item-${item.title}`"
@@ -91,11 +91,13 @@ const NAVS = [
       </v-navigation-drawer>
   
       <v-main class="d-flex justify-center bg-blue-lighten-5">
-        <div class="pa-4 ma-0 w-100 h-100 overflow-auto">
+        <div class="pa-0 ma-0 w-100 h-100 overflow-hidden position-relative">
           <!-- Suspense 用於頁面內容 slot / NuxtPage -->
           <Suspense>
             <template #default>
-              <slot />
+              <div class="w-100 h-100 overflow-auto position-absolute">
+                <slot />
+              </div>
             </template>
             <template #fallback>
               <div class="d-flex justify-center align-center" style="height:300px;">
