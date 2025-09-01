@@ -3,18 +3,54 @@ import { ref } from 'vue'
 // Drawer 開關狀態
 const isDrawerOpen = ref(false)
 
-const HEADER_NAVS = [
-  { title: 'gantt', icon: 'mdi-chart-gantt', to: '/gantt' },
-  { title: 'kanban', icon: 'mdi-bulletin-board', to: '/kanban' },
-  { title: 'flow', icon: 'mdi-sitemap-outline', to: '/flow' },
-  { title: 'map', icon: 'mdi-map-legend', to: '/map' },
+const NAVS = [
+  {
+    title: 'Gantt',
+    icon: 'mdi-chart-gantt',
+    to: '/gantt',
+    children: [
+      { title: 'Gantt', to: '/gantt' },
+      { title: 'Gantt-Canvas', to: '/gantt-canvas' },
+      { title: 'Gantt-SVG', to: '/gantt-svg' },
+    ]
+  },
+  {
+    title: 'Kanban',
+    icon: 'mdi-bulletin-board',
+    to: '/kanban',
+    children: [
+      { title: 'Kanban', to: '/kanban' },
+      { title: 'Kanban-Canvas', to: '/kanban-canvas' },
+      { title: 'Kanban-SVG', to: '/kanban-svg' },
+    ]
+  },
+  {
+    title: 'Flow',
+    icon: 'mdi-sitemap-outline',
+    to: '/flow',
+    children: [
+      { title: 'Flow', to: '/flow' },
+      { title: 'Flow-Canvas', to: '/flow-canvas' },
+      { title: 'Flow-SVG', to: '/flow-svg' },
+    ]
+  },
+  {
+    title: 'Map',
+    icon: 'mdi-map-legend',
+    to: '/map',
+    children: [
+      { title: 'Map', to: '/map' },
+      { title: 'Map-Canvas', to: '/map-canvas' },
+      { title: 'Map-SVG', to: '/map-svg' },
+    ]
+  },
 ]
 
 </script>
 
 <template>
-  <v-app>
-    <v-layout class="rounded rounded-md border">
+  <v-app class="pa-0 w-100vw h-100vh overflow-hidden">
+    <v-layout column>
       <v-app-bar title="Nuxt4-App" color="primary">
         <template #prepend>
           <v-app-bar-nav-icon @click="isDrawerOpen = !isDrawerOpen"/>
@@ -26,8 +62,8 @@ const HEADER_NAVS = [
         <template #title>
           <div class="d-flex justify-end align-center ga-3 mr-3">
             <v-btn
-              v-for="nav in HEADER_NAVS"
-              :key="nav.title"
+              v-for="nav in NAVS"
+              :key="`header-${nav.title}`"
               :to="nav.to"
             >
               <template #prepend>
@@ -41,12 +77,21 @@ const HEADER_NAVS = [
   
       <v-navigation-drawer v-model="isDrawerOpen" class="bg-blue-lighten-4">
         <v-list nav>
-          <v-list-item title="Navigation drawer" link/>
+          <template v-for="nav in NAVS" :key="`drawer-${nav.title}`">
+            <v-divider color="info" />
+            <v-list-item
+              v-for="item in nav.children"
+              :key="`drawer-item-${item.title}`"
+              :title="item.title"
+              :to="item.to"
+              link
+            />
+          </template>
         </v-list>
       </v-navigation-drawer>
   
       <v-main class="d-flex justify-center bg-blue-lighten-5">
-        <v-container class="border">
+        <div class="pa-4 ma-0 w-100 h-100 overflow-auto">
           <!-- Suspense 用於頁面內容 slot / NuxtPage -->
           <Suspense>
             <template #default>
@@ -58,7 +103,7 @@ const HEADER_NAVS = [
               </div>
             </template>
           </Suspense>
-        </v-container>
+        </div>
       </v-main>
     </v-layout>
   </v-app>
