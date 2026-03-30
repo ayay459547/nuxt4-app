@@ -44,6 +44,11 @@ const NAVS = [
       { title: 'Map-SVG', to: '/map-svg' },
     ]
   },
+  {
+    title: 'Camera',
+    icon: 'mdi-camera',
+    to: '/camera'
+  },
 ]
 
 </script>

@@ -9,23 +9,21 @@ export const useUtils = () => {
    * @param {*} value - 檢查的值
    * @returns {boolean} - 如果值為 null、undefined、空字串、空陣列、空物件、空 Set 或空 Map，則返回 true，否則返回 false
    */
-  const isEmpty = <T>(
-    value: T | null | undefined
-  ): value is null | undefined => {
+  const isEmpty = <T>(value: T | null | undefined): value is null | undefined => {
     if (value === null || value === undefined) return true
 
     const valueType = Object.prototype.toString.call(value)
 
     switch (valueType) {
-      case "[object Array]":
+      case '[object Array]':
         return (value as unknown[]).length === 0
-      case "[object String]":
+      case '[object String]':
         return (value as string).length === 0
-      case "[object Object]":
+      case '[object Object]':
         return Object.keys(value as object).length === 0
-      case "[object Set]":
+      case '[object Set]':
         return (value as unknown as Set<unknown>).size === 0
-      case "[object Map]":
+      case '[object Map]':
         return (value as unknown as Map<unknown, unknown>).size === 0
       default:
         return false
@@ -40,7 +38,9 @@ export const useUtils = () => {
    *          createGanttData - 重新產生任務資料的函數
    * @description 產生甘特圖任務資料
    */
-  const initGanttData = (count: number = 100): {
+  const initGanttData = (
+    count: number = 100
+  ): {
     ganttData: Ref<GanttTask[]>
     createGanttData: () => void
   } => {
@@ -52,7 +52,7 @@ export const useUtils = () => {
       'in-progress',
       'completed',
       'testing',
-      'on-hold',
+      'on-hold'
     ]
 
     // 隨機時間函數
@@ -86,7 +86,7 @@ export const useUtils = () => {
           status: statuses[Math.floor(Math.random() * statuses.length)] ?? 'not-started',
           start: taskStart,
           end: taskEnd,
-          progress: Math.floor(Math.random() * 101), // 0~100
+          progress: Math.floor(Math.random() * 101) // 0~100
         })
       })
     }
@@ -94,7 +94,6 @@ export const useUtils = () => {
 
     return { ganttData, createGanttData }
   }
-
 
   return { isEmpty, initGanttData }
 }
