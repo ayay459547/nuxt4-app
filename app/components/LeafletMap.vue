@@ -1,6 +1,5 @@
 <script setup lang="ts">
 const title = '我是 Map 元件'
-
 </script>
 
 <template>

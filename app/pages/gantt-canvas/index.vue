@@ -4,7 +4,6 @@ import ChartGanttCanvas from '~/components/ChartGanttCanvas.vue'
 const { initGanttData } = useUtils()
 const { ganttData } = initGanttData(50)
 console.log(ganttData)
-
 </script>
 
 <template>

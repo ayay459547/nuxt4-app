@@ -3,14 +3,14 @@
  * @see https://pictogrammers.com/library/mdi/
  */
 
-import "@mdi/font/css/materialdesignicons.css";
+import '@mdi/font/css/materialdesignicons.css'
 
-import "vuetify/styles";
-import { createVuetify } from "vuetify";
+import { createVuetify } from 'vuetify'
+import 'vuetify/styles'
 
 export default defineNuxtPlugin((app) => {
   const vuetify = createVuetify({
     // ... your configuration
-  });
-  app.vueApp.use(vuetify);
-});
+  })
+  app.vueApp.use(vuetify)
+})

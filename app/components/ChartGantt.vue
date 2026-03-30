@@ -32,18 +32,25 @@ const randomDate = (start: Date, end: Date) =>
 /** 今天 ±10 天 */
 const today = new Date()
 today.setHours(0, 0, 0, 0)
-const rangeStart = new Date(today); rangeStart.setDate(today.getDate() - 10)
-const rangeEnd   = new Date(today); rangeEnd.setDate(today.getDate() + 10)
+const rangeStart = new Date(today)
+rangeStart.setDate(today.getDate() - 10)
+const rangeEnd = new Date(today)
+rangeEnd.setDate(today.getDate() + 10)
 
 /** 依狀態給合理進度 */
 const progressByStatus = (s: Status) => {
   switch (s) {
-    case 'completed': return 100
-    case 'not-started': return 0
-    case 'on-hold': return Math.floor(Math.random() * 30)      // 0~29
-    case 'testing': return 70 + Math.floor(Math.random() * 25) // 70~94
+    case 'completed':
+      return 100
+    case 'not-started':
+      return 0
+    case 'on-hold':
+      return Math.floor(Math.random() * 30) // 0~29
+    case 'testing':
+      return 70 + Math.floor(Math.random() * 25) // 70~94
     case 'in-progress':
-    default: return 10 + Math.floor(Math.random() * 80)        // 10~89
+    default:
+      return 10 + Math.floor(Math.random() * 80) // 10~89
   }
 }
 
@@ -62,7 +69,7 @@ const createFakeTasks = (n = COUNT): GanttTask[] => {
       status,
       start: s,
       end: e,
-      progress: progressByStatus(status),
+      progress: progressByStatus(status)
     })
   }
   return list
@@ -72,11 +79,11 @@ const createFakeTasks = (n = COUNT): GanttTask[] => {
 const data = ref<GanttTask[]>([])
 
 watchEffect(() => {
-  data.value = (props.tasks?.length ? props.tasks : createFakeTasks()).map(t => ({
+  data.value = (props.tasks?.length ? props.tasks : createFakeTasks()).map((t) => ({
     ...t,
     // 保險：確保 start <= end
     start: t.start <= t.end ? t.start : t.end,
-    end: t.end >= t.start ? t.end : t.start,
+    end: t.end >= t.start ? t.end : t.start
   }))
   emit('ready', data.value)
 })
@@ -93,8 +100,8 @@ const days = computed(() => {
     return out
   }
   // 若不固定 21 天，就以資料最小/最大日期為軸（保留 1 天緩衝）
-  const min = new Date(Math.min(...data.value.map(t => t.start.getTime())))
-  const max = new Date(Math.max(...data.value.map(t => t.end.getTime())))
+  const min = new Date(Math.min(...data.value.map((t) => t.start.getTime())))
+  const max = new Date(Math.max(...data.value.map((t) => t.end.getTime())))
   min.setDate(min.getDate() - 1)
   max.setDate(max.getDate() + 1)
 
@@ -124,14 +131,14 @@ const toBarStyle = (t: GanttTask) => {
 }
 
 /** 狀態 -> 顏色 class（也可以改為 CSS 變數） */
-const statusClass = (s: Status) => ({
-  'not-started': 'bg-slate',
-  'in-progress': 'bg-blue',
-  'completed': 'bg-green',
-  'testing': 'bg-orange',
-  'on-hold': 'bg-purple',
-}[s] || 'bg-slate')
-
+const statusClass = (s: Status) =>
+  ({
+    'not-started': 'bg-slate',
+    'in-progress': 'bg-blue',
+    completed: 'bg-green',
+    testing: 'bg-orange',
+    'on-hold': 'bg-purple'
+  })[s] || 'bg-slate'
 </script>
 
 <template>
@@ -139,11 +146,9 @@ const statusClass = (s: Status) => ({
     <header class="header">
       <h2 v-if="props.title">{{ props.title }}</h2>
       <div class="legend">
-        <span class="dot bg-slate"/> Not Started
-        <span class="dot bg-blue"/> In Progress
-        <span class="dot bg-green"/> Completed
-        <span class="dot bg-orange"/> Testing
-        <span class="dot bg-purple"/> On Hold
+        <span class="dot bg-slate" /> Not Started <span class="dot bg-blue" /> In Progress
+        <span class="dot bg-green" /> Completed <span class="dot bg-orange" /> Testing
+        <span class="dot bg-purple" /> On Hold
       </div>
     </header>
 
@@ -178,7 +183,7 @@ const statusClass = (s: Status) => ({
           <div v-for="t in data" :key="t.id" class="row">
             <!-- 背景格線 -->
             <div class="row-grid">
-              <div v-for="d in days" :key="d.toISOString()" class="cell"/>
+              <div v-for="d in days" :key="d.toISOString()" class="cell" />
             </div>
 
             <!-- 任務 bar -->
@@ -188,9 +193,7 @@ const statusClass = (s: Status) => ({
               :style="toBarStyle(t)"
               :title="`${t.task}（${t.user}）\n${t.start.toLocaleDateString()} - ${t.end.toLocaleDateString()}\n${t.progress}%`"
             >
-              <span class="bar-label">
-                {{ t.progress }}%
-              </span>
+              <span class="bar-label"> {{ t.progress }}% </span>
             </div>
           </div>
         </div>
@@ -198,9 +201,7 @@ const statusClass = (s: Status) => ({
     </div>
 
     <!-- 若需要：顯示總筆數 -->
-    <footer class="footer">
-      共 {{ data.length }} 筆
-    </footer>
+    <footer class="footer">共 {{ data.length }} 筆</footer>
   </div>
 </template>
 
@@ -227,8 +228,8 @@ const statusClass = (s: Status) => ({
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: .75rem;
-    margin-bottom: .75rem;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
 
     h2 {
       margin: 0;
@@ -239,30 +240,40 @@ const statusClass = (s: Status) => ({
 
     .legend {
       display: flex;
-      gap: .75rem;
+      gap: 0.75rem;
       align-items: center;
       color: var(--muted);
-      font-size: .85rem;
+      font-size: 0.85rem;
 
       .dot {
         display: inline-block;
-        width: .65rem;
-        height: .65rem;
+        width: 0.65rem;
+        height: 0.65rem;
         border-radius: 50%;
-        margin-right: .35rem;
+        margin-right: 0.35rem;
       }
-      .bg-slate { background: var(--slate); }
-      .bg-blue { background: var(--blue); }
-      .bg-green { background: var(--green); }
-      .bg-orange { background: var(--orange); }
-      .bg-purple { background: var(--purple); }
+      .bg-slate {
+        background: var(--slate);
+      }
+      .bg-blue {
+        background: var(--blue);
+      }
+      .bg-green {
+        background: var(--green);
+      }
+      .bg-orange {
+        background: var(--orange);
+      }
+      .bg-purple {
+        background: var(--purple);
+      }
     }
   }
 
   .gantt {
     display: grid;
     grid-template-columns: 240px 1fr;
-    gap: .5rem;
+    gap: 0.5rem;
 
     .side {
       border-right: 1px solid var(--border);
@@ -271,7 +282,7 @@ const statusClass = (s: Status) => ({
         height: 36px;
         display: flex;
         align-items: center;
-        padding: 0 .5rem;
+        padding: 0 0.5rem;
         font-weight: 600;
         color: var(--muted);
         border-bottom: 1px solid var(--border);
@@ -283,14 +294,19 @@ const statusClass = (s: Status) => ({
         height: 32px;
         display: flex;
         align-items: center;
-        padding: 0 .5rem;
+        padding: 0 0.5rem;
         border-bottom: 1px dashed var(--border);
         .task-name {
           display: flex;
-          gap: .35rem;
+          gap: 0.35rem;
           align-items: baseline;
-          strong { color: var(--text); font-weight: 600; }
-          small { color: var(--muted); }
+          strong {
+            color: var(--text);
+            font-weight: 600;
+          }
+          small {
+            color: var(--muted);
+          }
         }
       }
     }
@@ -309,7 +325,7 @@ const statusClass = (s: Status) => ({
         border-radius: 0 8px 0 0;
 
         .col-head {
-          font-size: .85rem;
+          font-size: 0.85rem;
           color: var(--muted);
           text-align: center;
           &.today {
@@ -327,7 +343,9 @@ const statusClass = (s: Status) => ({
           height: 32px;
         }
 
-        .row + .row .row-grid { border-top: none; }
+        .row + .row .row-grid {
+          border-top: none;
+        }
 
         .row-grid {
           position: absolute;
@@ -341,7 +359,9 @@ const statusClass = (s: Status) => ({
             border-bottom: 1px dashed var(--border);
             border-right: 1px dashed var(--border);
           }
-          .cell:last-child { border-right: none; }
+          .cell:last-child {
+            border-right: none;
+          }
         }
 
         .bar {
@@ -352,27 +372,37 @@ const statusClass = (s: Status) => ({
           display: inline-flex;
           align-items: center;
           justify-content: center;
-          padding: 0 .5rem;
+          padding: 0 0.5rem;
           color: #fff;
-          font-size: .75rem;
+          font-size: 0.75rem;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
-          box-shadow: 0 2px 6px rgba(0,0,0,.08);
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
 
-          &.bg-slate { background: var(--slate); }
-          &.bg-blue { background: var(--blue); }
-          &.bg-green { background: var(--green); }
-          &.bg-orange { background: var(--orange); }
-          &.bg-purple { background: var(--purple); }
+          &.bg-slate {
+            background: var(--slate);
+          }
+          &.bg-blue {
+            background: var(--blue);
+          }
+          &.bg-green {
+            background: var(--green);
+          }
+          &.bg-orange {
+            background: var(--orange);
+          }
+          &.bg-purple {
+            background: var(--purple);
+          }
         }
       }
     }
   }
 
   .footer {
-    margin-top: .75rem;
-    font-size: .85rem;
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
     color: var(--muted);
   }
 }

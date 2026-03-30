@@ -21,16 +21,18 @@ const STATUSES: Status[] = ['not-started', 'in-progress', 'completed', 'testing'
 const COLORS: Record<Status, string> = {
   'not-started': '#9aa4b2',
   'in-progress': '#2f6feb',
-  'completed': '#22c55e',
-  'testing': '#f59e0b',
-  'on-hold': '#a855f7',
+  completed: '#22c55e',
+  testing: '#f59e0b',
+  'on-hold': '#a855f7'
 }
 
 /** 今天 ±10 天 */
 const today = new Date()
 today.setHours(0, 0, 0, 0)
-const rangeStart = new Date(today); rangeStart.setDate(today.getDate() - 10)
-const rangeEnd = new Date(today); rangeEnd.setDate(today.getDate() + 10)
+const rangeStart = new Date(today)
+rangeStart.setDate(today.getDate() - 10)
+const rangeEnd = new Date(today)
+rangeEnd.setDate(today.getDate() + 10)
 
 /** 假資料 */
 const randomDate = (start: Date, end: Date) =>
@@ -38,18 +40,25 @@ const randomDate = (start: Date, end: Date) =>
 
 const progressByStatus = (s: Status) => {
   switch (s) {
-    case 'completed': return 100
-    case 'not-started': return 0
-    case 'on-hold': return Math.floor(Math.random() * 30)
-    case 'testing': return 70 + Math.floor(Math.random() * 25)
-    case 'in-progress': default: return 10 + Math.floor(Math.random() * 80)
+    case 'completed':
+      return 100
+    case 'not-started':
+      return 0
+    case 'on-hold':
+      return Math.floor(Math.random() * 30)
+    case 'testing':
+      return 70 + Math.floor(Math.random() * 25)
+    case 'in-progress':
+    default:
+      return 10 + Math.floor(Math.random() * 80)
   }
 }
 
 const createFakeTasks = (n = COUNT): GanttTask[] =>
   Array.from({ length: n }).map((_, i) => {
     const s = randomDate(rangeStart, rangeEnd)
-    const e = new Date(s); e.setDate(s.getDate() + 1 + Math.floor(Math.random() * 10))
+    const e = new Date(s)
+    e.setDate(s.getDate() + 1 + Math.floor(Math.random() * 10))
     const status = STATUSES[Math.floor(Math.random() * STATUSES.length)] ?? 'not-started'
     return {
       id: i + 1,
@@ -58,7 +67,7 @@ const createFakeTasks = (n = COUNT): GanttTask[] =>
       status,
       start: s,
       end: e,
-      progress: progressByStatus(status),
+      progress: progressByStatus(status)
     }
   })
 
@@ -129,21 +138,25 @@ const colW = 80 // 每一天寬度
 
       <!-- 任務列 -->
       <g v-for="(t, idx) in renderTasks" :key="t.id">
-        <text
-          x="4"
-          :y="headerH + idx * rowH + rowH / 2 + 4"
-          font-size="12"
-          fill="#333"
-        >
+        <text x="4" :y="headerH + idx * rowH + rowH / 2 + 4" font-size="12" fill="#333">
           {{ t.task }} ({{ t.user }})
         </text>
 
         <!-- bar -->
         <rect
-          :x="marginLeft + Math.max(0, Math.floor((t.start.getTime() - rangeStart.getTime()) / 86400000)) * colW"
+          :x="
+            marginLeft +
+            Math.max(0, Math.floor((t.start.getTime() - rangeStart.getTime()) / 86400000)) * colW
+          "
           :y="headerH + idx * rowH + 6"
-          :width="Math.max(4, (Math.ceil((t.end.getTime() - rangeStart.getTime()) / 86400000) -
-                               Math.max(0, Math.floor((t.start.getTime() - rangeStart.getTime()) / 86400000))) * colW)"
+          :width="
+            Math.max(
+              4,
+              (Math.ceil((t.end.getTime() - rangeStart.getTime()) / 86400000) -
+                Math.max(0, Math.floor((t.start.getTime() - rangeStart.getTime()) / 86400000))) *
+                colW
+            )
+          "
           :height="rowH - 12"
           :fill="COLORS[t.status]"
           rx="4"
@@ -151,7 +164,11 @@ const colW = 80 // 每一天寬度
 
         <!-- progress text -->
         <text
-          :x="marginLeft + Math.max(0, Math.floor((t.start.getTime() - rangeStart.getTime()) / 86400000)) * colW + 10"
+          :x="
+            marginLeft +
+            Math.max(0, Math.floor((t.start.getTime() - rangeStart.getTime()) / 86400000)) * colW +
+            10
+          "
           :y="headerH + idx * rowH + rowH / 2 + 4"
           font-size="12"
           fill="white"

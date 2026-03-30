@@ -8,7 +8,7 @@ export default defineNuxtConfig({
   ssr: false,
   devtools: { enabled: true },
   build: {
-    transpile: ['vuetify'],
+    transpile: ['vuetify']
   },
   components: true,
   css: ['@/assets/scss/main.scss'],
@@ -26,14 +26,14 @@ export default defineNuxtConfig({
         // @ts-expect-error : 請參考 vuetify 官網
         config.plugins.push(vuetify({ autoImport: true }))
       })
-    },
+    }
   ],
   vite: {
     vue: {
       template: {
-        transformAssetUrls,
-      },
-    },
+        transformAssetUrls
+      }
+    }
   },
   devServer: {
     port: 3000

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount, nextTick } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 
 const { initGanttData } = useUtils()
 const { ganttData } = initGanttData(30)

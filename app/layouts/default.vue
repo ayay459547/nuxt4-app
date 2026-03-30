@@ -11,7 +11,7 @@ const NAVS = [
     children: [
       { title: 'Gantt', to: '/gantt' },
       { title: 'Gantt-Canvas', to: '/gantt-canvas' },
-      { title: 'Gantt-SVG', to: '/gantt-svg' },
+      { title: 'Gantt-SVG', to: '/gantt-svg' }
     ]
   },
   {
@@ -21,7 +21,7 @@ const NAVS = [
     children: [
       { title: 'Kanban', to: '/kanban' },
       { title: 'Kanban-Canvas', to: '/kanban-canvas' },
-      { title: 'Kanban-SVG', to: '/kanban-svg' },
+      { title: 'Kanban-SVG', to: '/kanban-svg' }
     ]
   },
   {
@@ -31,7 +31,7 @@ const NAVS = [
     children: [
       { title: 'Flow', to: '/flow' },
       { title: 'Flow-Canvas', to: '/flow-canvas' },
-      { title: 'Flow-SVG', to: '/flow-svg' },
+      { title: 'Flow-SVG', to: '/flow-svg' }
     ]
   },
   {
@@ -41,16 +41,15 @@ const NAVS = [
     children: [
       { title: 'Map', to: '/map' },
       { title: 'Map-Canvas', to: '/map-canvas' },
-      { title: 'Map-SVG', to: '/map-svg' },
+      { title: 'Map-SVG', to: '/map-svg' }
     ]
   },
   {
     title: 'Camera',
     icon: 'mdi-camera',
     to: '/camera'
-  },
+  }
 ]
-
 </script>
 
 <template>
@@ -58,19 +57,15 @@ const NAVS = [
     <v-layout column>
       <v-app-bar title="Nuxt4-App" color="primary">
         <template #prepend>
-          <v-app-bar-nav-icon @click="isDrawerOpen = !isDrawerOpen"/>
+          <v-app-bar-nav-icon @click="isDrawerOpen = !isDrawerOpen" />
           <v-btn :to="'/'">
             <h3>Nuxt4-App</h3>
           </v-btn>
         </template>
-  
+
         <template #title>
           <div class="d-flex justify-end align-center ga-3 mr-3">
-            <v-btn
-              v-for="nav in NAVS"
-              :key="`header-${nav.title}`"
-              :to="nav.to"
-            >
+            <v-btn v-for="nav in NAVS" :key="`header-${nav.title}`" :to="nav.to">
               <template #prepend>
                 <v-icon>{{ nav.icon }}</v-icon>
               </template>
@@ -79,7 +74,7 @@ const NAVS = [
           </div>
         </template>
       </v-app-bar>
-  
+
       <v-navigation-drawer v-model="isDrawerOpen" class="bg-blue-lighten-4">
         <v-list nav>
           <template v-for="nav in NAVS" :key="`drawer-${nav.title}`">
@@ -94,7 +89,7 @@ const NAVS = [
           </template>
         </v-list>
       </v-navigation-drawer>
-  
+
       <v-main class="d-flex justify-center bg-blue-lighten-5">
         <div class="pa-0 ma-0 w-100 h-100 overflow-hidden position-relative">
           <!-- Suspense 用於頁面內容 slot / NuxtPage -->
@@ -105,8 +100,8 @@ const NAVS = [
               </div>
             </template>
             <template #fallback>
-              <div class="d-flex justify-center align-center" style="height:300px;">
-                <v-progress-circular indeterminate color="primary" size="48"/>
+              <div class="d-flex justify-center align-center" style="height: 300px">
+                <v-progress-circular indeterminate color="primary" size="48" />
               </div>
             </template>
           </Suspense>

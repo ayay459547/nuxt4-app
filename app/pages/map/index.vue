@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import LeafletMap from '~/components/LeafletMap.vue'
-
 </script>
 
 <template>
@@ -9,5 +8,4 @@ import LeafletMap from '~/components/LeafletMap.vue'
   </div>
 </template>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>

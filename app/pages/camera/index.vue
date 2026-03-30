@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import Scanner from '~/components/Scanner.vue';
-
+import Scanner from '~/components/Scanner.vue'
 </script>
 
 <template>
@@ -13,6 +12,4 @@ import Scanner from '~/components/Scanner.vue';
   </div>
 </template>
 
-<style lang="scss" scoped>
-
-</style>
+<style lang="scss" scoped></style>

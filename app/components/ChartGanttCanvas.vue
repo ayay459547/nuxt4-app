@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, watchEffect, onMounted, onBeforeUnmount } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watchEffect } from 'vue'
 import type { GanttTask } from '~/types/gantt'
 
 type Status = GanttTask['status']
@@ -22,9 +22,9 @@ const STATUSES: Status[] = ['not-started', 'in-progress', 'completed', 'testing'
 const COLORS: Record<Status, string> = {
   'not-started': '#9aa4b2',
   'in-progress': '#2f6feb',
-  'completed': '#22c55e',
-  'testing': '#f59e0b',
-  'on-hold': '#a855f7',
+  completed: '#22c55e',
+  testing: '#f59e0b',
+  'on-hold': '#a855f7'
 }
 
 const canvasRef = ref<HTMLCanvasElement>()
@@ -33,8 +33,10 @@ let ctx: CanvasRenderingContext2D | null = null
 /** 今天 ±10 天 */
 const today = new Date()
 today.setHours(0, 0, 0, 0)
-const rangeStart = new Date(today); rangeStart.setDate(today.getDate() - 10)
-const rangeEnd = new Date(today); rangeEnd.setDate(today.getDate() + 10)
+const rangeStart = new Date(today)
+rangeStart.setDate(today.getDate() - 10)
+const rangeEnd = new Date(today)
+rangeEnd.setDate(today.getDate() + 10)
 
 /** 假資料產生 */
 const randomDate = (start: Date, end: Date) =>
@@ -42,18 +44,25 @@ const randomDate = (start: Date, end: Date) =>
 
 const progressByStatus = (s: Status) => {
   switch (s) {
-    case 'completed': return 100
-    case 'not-started': return 0
-    case 'on-hold': return Math.floor(Math.random() * 30)
-    case 'testing': return 70 + Math.floor(Math.random() * 25)
-    case 'in-progress': default: return 10 + Math.floor(Math.random() * 80)
+    case 'completed':
+      return 100
+    case 'not-started':
+      return 0
+    case 'on-hold':
+      return Math.floor(Math.random() * 30)
+    case 'testing':
+      return 70 + Math.floor(Math.random() * 25)
+    case 'in-progress':
+    default:
+      return 10 + Math.floor(Math.random() * 80)
   }
 }
 
 const createFakeTasks = (n = COUNT): GanttTask[] =>
   Array.from({ length: n }).map((_, i) => {
     const s = randomDate(rangeStart, rangeEnd)
-    const e = new Date(s); e.setDate(s.getDate() + 1 + Math.floor(Math.random() * 10))
+    const e = new Date(s)
+    e.setDate(s.getDate() + 1 + Math.floor(Math.random() * 10))
     const status = STATUSES[Math.floor(Math.random() * STATUSES.length)] ?? 'not-started'
     return {
       id: i + 1,
@@ -62,7 +71,7 @@ const createFakeTasks = (n = COUNT): GanttTask[] =>
       status,
       start: s,
       end: e,
-      progress: progressByStatus(status),
+      progress: progressByStatus(status)
     }
   })
 
@@ -135,7 +144,10 @@ function draw() {
 
     // bar
     const startIdx = Math.max(0, Math.floor((t.start.getTime() - rangeStart.getTime()) / 86400000))
-    const endIdx = Math.min(dlist.length, Math.ceil((t.end.getTime() - rangeStart.getTime()) / 86400000))
+    const endIdx = Math.min(
+      dlist.length,
+      Math.ceil((t.end.getTime() - rangeStart.getTime()) / 86400000)
+    )
     const x1 = marginLeft + startIdx * colW
     const x2 = marginLeft + endIdx * colW
     const barW = Math.max(4, x2 - x1)
@@ -169,7 +181,7 @@ onBeforeUnmount(() => {
     <header>
       <h2 v-if="props.title">{{ props.title }}</h2>
     </header>
-    <canvas ref="canvasRef" class="gantt-canvas"/>
+    <canvas ref="canvasRef" class="gantt-canvas" />
     <footer>共 {{ renderTasks.length }} 筆</footer>
   </div>
 </template>

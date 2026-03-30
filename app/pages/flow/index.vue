@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import VueFlow from '~/components/VueFlow.vue'
-
 </script>
 
 <template>
@@ -9,5 +8,4 @@ import VueFlow from '~/components/VueFlow.vue'
   </div>
 </template>
 
-<style scoped lang="scss">
-</style>
+<style scoped lang="scss"></style>
