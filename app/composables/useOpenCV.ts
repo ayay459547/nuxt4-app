@@ -1,10 +1,11 @@
 /**
  * Open CV
  */
+import type { CV } from '@techstark/opencv-js'
 import cvModule from '@techstark/opencv-js'
 
 export async function getOpenCV() {
-  let cv
+  let cv: CV
   if (cvModule instanceof Promise) {
     cv = await cvModule
   } else {
@@ -16,7 +17,7 @@ export async function getOpenCV() {
   return { cv }
 }
 
-let cvPromise: Promise<any> | null = null
+let cvPromise: Promise<boolean> | null = null
 
 export const getOpenCVFormScript = async () => {
   if (cvPromise) return cvPromise
