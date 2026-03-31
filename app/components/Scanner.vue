@@ -31,33 +31,33 @@ const video = ref<HTMLVideoElement | null>(null)
 const canvas = ref<HTMLCanvasElement | null>(null)
 const outputCanvas = ref<HTMLCanvasElement | null>(null)
 
-let stream: MediaStream | null = null
-let cv: any = null
+const stream = ref<MediaStream | null>(null)
+const cv = ref<any>(null)
 
 const startCamera = async () => {
-  stream = await navigator.mediaDevices.getUserMedia({
+  stream.value = await navigator.mediaDevices.getUserMedia({
     video: { facingMode: 'environment' }
   })
-  if (video.value) video.value.srcObject = stream
+  if (video.value) video.value.srcObject = stream.value
 
-  if (!cv) cv = await useOpenCV()
+  if (!cv.value) cv.value = await useOpenCV()
 }
 
 const stopCamera = () => {
-  if (!stream) return
-  stream.getTracks().forEach((track) => track.stop())
+  if (!stream.value) return
+  stream.value.getTracks().forEach((track) => track.stop())
   if (video.value) video.value.srcObject = null
-  stream = null
+  stream.value = null
 }
 
 const toggleCamera = async () => {
-  if (stream) stopCamera()
+  if (stream.value) stopCamera()
   else await startCamera()
 }
 
 // ⚡ 只在按下 Scan 才運算
 const capture = async () => {
-  if (!video.value || !canvas.value || !cv) return
+  if (!video.value || !canvas.value || !cv.value) return
 
   const ctx = canvas.value.getContext('2d')!
 
@@ -69,8 +69,8 @@ const capture = async () => {
 
   ctx.drawImage(video.value, 0, 0, w, h)
 
-  const src = cv.imread(canvas.value)
-  const contour = detectDocumentContour(cv, src)
+  const src = cv.value.imread(canvas.value)
+  const contour = detectDocumentContour(cv.value, src)
 
   if (!contour) {
     alert('找不到文件')
@@ -79,8 +79,8 @@ const capture = async () => {
   }
 
   const points = contour.data32S
-  const warped = warpDocument(cv, src, points, 500, 700)
-  cv.imshow(outputCanvas.value, warped)
+  const warped = warpDocument(cv.value, src, points, 500, 700)
+  cv.value.imshow(outputCanvas.value, warped)
 
   src.delete()
   warped.delete()
