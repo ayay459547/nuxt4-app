@@ -29,7 +29,7 @@ const initOpenCV = async () => {
 
 const startCamera = async () => {
   try {
-    await initOpenCV()
+    initOpenCV()
     stream.value = await navigator.mediaDevices.getUserMedia({
       video: { facingMode: 'environment' }
     })
