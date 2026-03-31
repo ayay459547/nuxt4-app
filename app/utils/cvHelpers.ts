@@ -1,4 +1,6 @@
-export const detectDocumentContour = (cv: any, src: any) => {
+import type { CV } from '@techstark/opencv-js'
+
+export const detectDocumentContour = (cv: CV, src: any) => {
   const gray = new cv.Mat()
   const edges = new cv.Mat()
   const contours = new cv.MatVector()

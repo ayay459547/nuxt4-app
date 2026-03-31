@@ -4,8 +4,6 @@ import Scanner from '~/components/Scanner.vue'
 
 <template>
   <div>
-    <h1>Document Scanner</h1>
-
     <ClientOnly>
       <Scanner />
     </ClientOnly>
