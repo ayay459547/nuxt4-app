@@ -1,25 +1,11 @@
 /**
  * Open CV
  */
-import type { CV } from '@techstark/opencv-js'
-import cvModule from '@techstark/opencv-js'
-
-export async function getOpenCV() {
-  let cv: CV
-  if (cvModule instanceof Promise) {
-    cv = await cvModule
-  } else {
-    await new Promise((resolve) => {
-      cvModule.onRuntimeInitialized = () => resolve(true)
-    })
-    cv = cvModule
-  }
-  return { cv }
-}
+// import type { CV } from '@techstark/opencv-js'
+// import cvModule from '@techstark/opencv-js'
 
 let cvPromise: Promise<boolean> | null = null
-
-export const getOpenCVFormScript = async () => {
+export const getOpenCV = async () => {
   if (cvPromise) return cvPromise
 
   cvPromise = new Promise((resolve) => {
@@ -32,6 +18,7 @@ export const getOpenCVFormScript = async () => {
     const script = document.createElement('script')
     script.src = 'https://docs.opencv.org/4.x/opencv.js'
     script.async = true
+    script.defer = true // 確保不阻塞 HTML 解析
 
     script.onload = () => {
       ;(window as any).cv['onRuntimeInitialized'] = () => {
@@ -40,6 +27,8 @@ export const getOpenCVFormScript = async () => {
     }
 
     script.onerror = () => {
+      console.error('Failed to load OpenCV.js')
+      cvPromise = null // 失敗的話清空，允許下次重試
       resolve(false)
     }
 
@@ -51,6 +40,6 @@ export const getOpenCVFormScript = async () => {
 
 export const useOpenCV = async () => {
   if (import.meta.server) return null
-  const { cv } = await getOpenCV()
+  const cv = await getOpenCV()
   return cv
 }

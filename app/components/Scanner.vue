@@ -18,16 +18,22 @@ const canvas = ref<HTMLCanvasElement | null>(null)
 const outputCanvas = ref<HTMLCanvasElement | null>(null)
 
 const stream = ref<MediaStream | null>(null)
-const cv = ref<CV | null>(null)
+let cv: CV | null = null
+
+const initOpenCV = async () => {
+  if (cv === null) {
+    cv = await useOpenCV()
+  }
+  console.log(' init open CV ', cv)
+}
 
 const startCamera = async () => {
   try {
+    await initOpenCV()
     stream.value = await navigator.mediaDevices.getUserMedia({
       video: { facingMode: 'environment' }
     })
     if (video.value) video.value.srcObject = stream.value
-
-    if (!cv.value) cv.value = await useOpenCV()
   } catch (error) {
     console.error('Error accessing camera:', error)
     addMessage('無法存取相機，請確認權限設定。')
@@ -48,12 +54,7 @@ const toggleCamera = async () => {
 
 // ⚡ 只在按下 Scan 才運算
 const capture = async () => {
-  console.log({
-    cv: cv.value,
-    canvas: canvas.value,
-    video: video.value
-  })
-  if (!video.value || !canvas.value || !cv.value) {
+  if (!video.value || !canvas.value || !cv) {
     addMessage('掃描失敗')
     return
   }
@@ -68,8 +69,8 @@ const capture = async () => {
 
   ctx.drawImage(video.value, 0, 0, w, h)
 
-  const src = cv.value.imread(canvas.value)
-  const contour = detectDocumentContour(cv.value, src)
+  const src = cv.imread(canvas.value)
+  const contour = detectDocumentContour(cv, src)
 
   if (!contour) {
     addMessage('找不到文件邊緣，請將文件對齊於背景並保持光線明亮。')
@@ -79,9 +80,9 @@ const capture = async () => {
   addMessage('掃描成功', 'success')
 
   const points = contour.data32S
-  const warped = warpDocument(cv.value, src, points, 500, 700)
+  const warped = warpDocument(cv, src, points, 500, 700)
   if (outputCanvas.value) {
-    cv.value.imshow(outputCanvas.value, warped)
+    cv.imshow(outputCanvas.value, warped)
   }
 
   // 釋放記憶體
